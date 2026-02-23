@@ -4,7 +4,7 @@ using Microsoft.Azure.Cosmos;
 
 namespace EricSuiteApi.Features.Migraines.Repositories;
 
-public class MigraineRepository 
+public class MigraineRepository //: ICosmosRepository<Migraine>
 {
 	private Container _container;
 
