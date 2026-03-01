@@ -1,3 +1,5 @@
+using EricSuiteApi.Features.Migraines.Repositories;
+using EricSuiteApi.Features.Migraines.Services;
 using EricSuiteApi.Infrastructure.Cosmos;
 
 
@@ -7,6 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCosmos(builder.Configuration);
+
+builder.Services.AddScoped<IMigraineRepository, MigraineRepository>();
+builder.Services.AddScoped<MigrainesService>();
 
 var app = builder.Build();
 

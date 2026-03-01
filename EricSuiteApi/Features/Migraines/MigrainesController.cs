@@ -1,6 +1,6 @@
-using EricSuiteApi.Features.Migraines.Models;
+using EricSuiteApi.Features.Migraines.Dtos;
+using EricSuiteApi.Features.Migraines.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Cosmos;
 
 namespace EricSuiteApi.Features.Migraines;
 
@@ -8,33 +8,16 @@ namespace EricSuiteApi.Features.Migraines;
 [Route("[controller]/api/[action]")]
 public class MigrainesController : ControllerBase
 {
-	private readonly Container _container;
-	public MigrainesController(Database database)
+	private readonly MigrainesService _migrainesService;
+	public MigrainesController(MigrainesService migrainesService)
 	{
-		_container = database.GetContainer("migraine");
+		_migrainesService = migrainesService;
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<IEnumerable<Migraine>>> TestingEndpoint()
+	public async Task<ActionResult<IEnumerable<MigraineDto>>> GetAllMigraines()
 	{
-		var userId = "eric";
-		var query = new QueryDefinition("SELECT * FROM c WHERE c.userId = @userId")
-			.WithParameter("@userId", userId);
-		var iterator = _container.GetItemQueryIterator<Migraine>(
-			query,
-			requestOptions: new QueryRequestOptions
-			{
-				PartitionKey = new PartitionKey(userId)
-			});
-
-		List<Migraine> results = [];
-
-		while (iterator.HasMoreResults)
-		{
-			var response = await iterator.ReadNextAsync();
-			results.AddRange(response.Resource);
-		}
-
-		return Ok(results);
+		var migraines = await _migrainesService.GetMigraines();
+		return Ok(migraines);
 	}
 }
