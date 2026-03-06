@@ -15,7 +15,6 @@
 
     <ItemGroup>
       <Folder Include="Features\Dossier\" />
-      <Folder Include="Infrastructure\Shared\" />
     </ItemGroup>
 
 </Project>

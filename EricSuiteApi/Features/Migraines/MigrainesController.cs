@@ -15,9 +15,16 @@ public class MigrainesController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<IEnumerable<MigraineDto>>> GetAllMigraines()
+	public async Task<ActionResult<IEnumerable<MigraineDto>>> GetAll()
 	{
 		var migraines = await _migrainesService.GetMigraines();
 		return Ok(migraines);
+	}
+
+	[HttpPost]
+	public async Task<IActionResult> AddNew(MigraineDto migraine)
+	{
+		var result = await _migrainesService.AddMigraine(migraine);
+		return Ok(result);
 	}
 }
