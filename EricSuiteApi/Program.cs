@@ -1,6 +1,7 @@
 using EricSuiteApi.Features.Migraines.Repositories;
 using EricSuiteApi.Features.Migraines.Services;
 using EricSuiteApi.Infrastructure.Cosmos;
+using EricSuiteApi.Infrastructure.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,10 +22,9 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

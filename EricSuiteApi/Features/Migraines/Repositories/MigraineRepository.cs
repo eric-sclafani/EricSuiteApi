@@ -41,13 +41,15 @@ public class MigraineRepository : IMigraineRepository
 
 	public async Task<ItemResponse<Migraine>> AddAsync(Migraine migraine)
 	{
-		
+		migraine.userId = _userId;
+		migraine.id = Guid.NewGuid().ToString();
 		var req = await _container.CreateItemAsync(migraine, _partitionKey);
 		return req;
 	}
 
 	public async Task<ItemResponse<Migraine>> UpdateAsync(Migraine migraine)
 	{
+		migraine.userId = _userId;
 		var req = await _container.ReplaceItemAsync(migraine, migraine.id, _partitionKey);
 		return req;
 	}

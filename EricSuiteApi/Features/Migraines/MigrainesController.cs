@@ -27,4 +27,18 @@ public class MigrainesController : ControllerBase
 		var result = await _migrainesService.AddMigraine(migraine);
 		return Ok(result);
 	}
+	
+	[HttpPost]
+	public async Task<IActionResult> Update(MigraineDto migraine)
+	{
+		var result = await _migrainesService.UpdateMigraine(migraine);
+		return Ok(result);
+	}
+
+	[HttpDelete]
+	public async Task<IActionResult> Delete(string id)
+	{
+		var result = await _migrainesService.DeleteMigraine(id);
+		return Ok(result);
+	}
 }

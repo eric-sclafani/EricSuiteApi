@@ -2,7 +2,6 @@ using System.Net;
 using EricSuiteApi.Features.Migraines.Dtos;
 using EricSuiteApi.Features.Migraines.Models;
 using EricSuiteApi.Features.Migraines.Repositories;
-using EricSuiteApi.Infrastructure.Shared;
 
 namespace EricSuiteApi.Features.Migraines.Services;
 
@@ -28,29 +27,24 @@ public class MigrainesService
 		return dto;
 	}
 
-	public async Task<Result<Migraine>> AddMigraine(MigraineDto dto)
+	public async Task<Migraine> AddMigraine(MigraineDto dto)
 	{
-		var migraine = new Migraine
-		{
-			intensity = dto.intensity,
-			date = dto.date,
-			notes = dto.notes,
-			medications = dto.medications
-		};
+		var migraine = Migraine.FromDto(dto);
+		var resp = await _migraineRepo.AddAsync(migraine);
+		return resp.Resource;
 
-		Result<Migraine> result = new();
-		try
-		{
-			var resp = await _migraineRepo.AddAsync(migraine);
-			result.Resource = resp.Resource;
-			result.Message = "Migraine added";
-		}
-		catch (Exception e)
-		{
-			result.IsSuccess = false;
-			result.Message = e.Message;
-		}
+	}
+	
+	public async Task<Migraine> UpdateMigraine(MigraineDto dto)
+	{
+		var migraine = Migraine.FromDto(dto);
+		var resp = await _migraineRepo.UpdateAsync(migraine);
+		return resp.Resource;
+	}
 
-		return result;
+	public async Task<Migraine> DeleteMigraine(string id)
+	{
+		var resp = await _migraineRepo.DeleteAsync(id);
+		return resp.Resource;
 	}
 }
